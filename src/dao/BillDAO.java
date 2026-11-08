@@ -95,10 +95,10 @@ public class BillDAO {
 
             stmt.setInt(1, bill.getPatient_id());
 
-            if (bill.getPrecsription_id() == 0) {
+            if (bill.getPrescription_id() == 0) {
                 stmt.setNull(2, Types.INTEGER);
             } else {
-                stmt.setInt(2, bill.getPrecsription_id());
+                stmt.setInt(2, bill.getPrescription_id());
             }
 
             stmt.setFloat(3, bill.getAmount());
