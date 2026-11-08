@@ -31,7 +31,7 @@ public class Bill {
 		public int getPatient_id() {
 			return patient_id;
 		}
-		public int getPrecsription_id() {
+		public int getPrescription_id() {
 			return prescription_id;
 		}
 		public float getAmount() {
