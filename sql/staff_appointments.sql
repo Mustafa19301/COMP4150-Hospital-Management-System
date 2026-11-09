@@ -20,6 +20,12 @@ INSERT INTO Nurse (staff_id) VALUES
     ((SELECT staff_id FROM Staff WHERE username = 'dkim')),
     ((SELECT staff_id FROM Staff WHERE username = 'omartin'));
 
+INSERT INTO Patient (name, date_of_birth, phone, address) VALUES
+    ('Michael Brown',  '1985-03-14', '519-555-0201', '1250 Tecumseh Rd E, Windsor, ON'),
+    ('Linda Garcia',   '1972-11-02', '519-555-0202', '120 Ouellette Ave, Windsor, ON'),
+    ('Noah Thompson',  '2016-06-21', '519-555-0203', '88 Wyandotte St W, Windsor, ON'),
+    ('Ava Robinson',   '1999-01-30', '519-555-0204', '2550 Howard Ave, Windsor, ON');
+
 SET @dr_yan    = (SELECT staff_id   FROM Staff   WHERE username = 'xyan');
 SET @dr_ortiz  = (SELECT staff_id   FROM Staff   WHERE username = 'mortiz');
 SET @dr_patel  = (SELECT staff_id   FROM Staff   WHERE username = 'ppatel');
