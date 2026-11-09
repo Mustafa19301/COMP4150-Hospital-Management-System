@@ -31,11 +31,15 @@ VALUES
 -- PATIENT
 INSERT INTO Patient (name, date_of_birth, phone, address)
 VALUES
-('John Smith', '1985-04-12', '519-555-2001', 'Windsor, Ontario'),
-('Jane Doe', '1992-09-23', '519-555-2002', 'Windsor, Ontario'),
-('Robert Johnson', '1978-02-15', '519-555-2003', 'LaSalle, Ontario'),
-('Mary Williams', '2000-11-05', '519-555-2004', 'Windsor, Ontario'),
-('David Brown', '1965-07-19', '519-555-2005', 'Tecumseh, Ontario');
+    ('John Smith', '1985-04-12', '519-555-2001', 'Windsor, Ontario'),
+    ('Jane Doe', '1992-09-23', '519-555-2002', 'Windsor, Ontario'),
+    ('Robert Johnson', '1978-02-15', '519-555-2003', 'LaSalle, Ontario'),
+    ('Mary Williams', '2000-11-05', '519-555-2004', 'Windsor, Ontario'),
+    ('David Brown', '1965-07-19', '519-555-2005', 'Tecumseh, Ontario'),
+    ('Michael Brown', '1985-03-14', '519-555-0201', 'Windsor, Ontario'),
+    ('Linda Garcia', '1972-11-02', '519-555-0202', 'Leamington, Ontario'),
+    ('Noah Thompson', '2016-06-21', '519-555-0203', 'Belleville, Ontario'),
+    ('Ava Robinson', '1999-01-30', '519-555-0204', 'LaSalle, Ontario');
 
 -- MEDICATION
 INSERT INTO Medication (name, price)
