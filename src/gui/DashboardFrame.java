@@ -1,8 +1,13 @@
 package gui;
 
+import gui.panels.PatientPanel;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DashboardFrame extends JFrame {
@@ -16,6 +21,12 @@ public class DashboardFrame extends JFrame {
 
     private final String name;
     private final String role;
+
+    private CardLayout contentLayout;
+    private JPanel contentPanel;
+
+    private final Map<String, JPanel> navigationItems =
+            new LinkedHashMap<>();
 
     public DashboardFrame(Map<String, Object> staff) {
 
@@ -33,7 +44,7 @@ public class DashboardFrame extends JFrame {
 
         root.add(createHeader(), BorderLayout.NORTH);
         root.add(createSidebar(), BorderLayout.WEST);
-        root.add(createMainContent(), BorderLayout.CENTER);
+        root.add(createWorkspaceContent(), BorderLayout.CENTER);
 
         setContentPane(root);
     }
@@ -58,6 +69,7 @@ public class DashboardFrame extends JFrame {
                 name.substring(0, 1).toUpperCase(),
                 SwingConstants.CENTER
         );
+
         avatar.setOpaque(true);
         avatar.setBackground(new Color(222, 239, 235));
         avatar.setForeground(TEAL);
@@ -175,28 +187,100 @@ public class DashboardFrame extends JFrame {
             JPanel sidebar, String text, boolean selected) {
 
         JPanel item = new JPanel(new BorderLayout());
+
         item.setMaximumSize(new Dimension(
                 Integer.MAX_VALUE, 43
         ));
+
         item.setPreferredSize(new Dimension(205, 43));
+
         item.setBackground(
                 selected ? new Color(35, 91, 91) : DARK
         );
+
         item.setBorder(new EmptyBorder(0, 13, 0, 10));
         item.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel label = new JLabel(text);
+
         label.setFont(new Font(
                 "SansSerif",
                 selected ? Font.BOLD : Font.PLAIN,
                 13
         ));
+
         label.setForeground(WHITE);
 
         item.add(label, BorderLayout.CENTER);
 
+        navigationItems.put(text, item);
+
+        item.setCursor(
+                Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+        );
+
+        item.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showPage(text);
+            }
+        });
+
         sidebar.add(item);
         sidebar.add(Box.createVerticalStrut(5));
+    }
+
+    private JPanel createWorkspaceContent() {
+
+        contentLayout = new CardLayout();
+
+        contentPanel = new JPanel(contentLayout);
+        contentPanel.setBackground(BACKGROUND);
+
+        contentPanel.add(
+                createMainContent(),
+                "Dashboard"
+        );
+
+        contentPanel.add(
+                new PatientPanel(),
+                "Patients"
+        );
+
+        return contentPanel;
+    }
+
+    private void showPage(String page) {
+
+        if (contentPanel == null || contentLayout == null) {
+            return;
+        }
+
+        contentLayout.show(contentPanel, page);
+
+        for (Map.Entry<String, JPanel> entry
+                : navigationItems.entrySet()) {
+
+            boolean selected = entry.getKey().equals(page);
+
+            JPanel item = entry.getValue();
+
+            item.setBackground(
+                    selected ? new Color(35, 91, 91) : DARK
+            );
+
+            JLabel label = (JLabel) item.getComponent(0);
+
+            label.setFont(new Font(
+                    "SansSerif",
+                    selected ? Font.BOLD : Font.PLAIN,
+                    13
+            ));
+        }
+
+        revalidate();
+        repaint();
     }
 
     private JPanel createMainContent() {
@@ -290,7 +374,9 @@ public class DashboardFrame extends JFrame {
         description.setFont(new Font("SansSerif", Font.PLAIN, 13));
         description.setForeground(MUTED);
 
-        JLabel roleLabel = new JLabel("SIGNED IN AS: " + role.toUpperCase());
+        JLabel roleLabel = new JLabel(
+                "SIGNED IN AS: " + role.toUpperCase()
+        );
         roleLabel.setFont(new Font("SansSerif", Font.BOLD, 10));
         roleLabel.setForeground(TEAL);
 
@@ -402,6 +488,21 @@ public class DashboardFrame extends JFrame {
         card.add(titleLabel);
         card.add(Box.createVerticalStrut(8));
         card.add(descriptionLabel);
+
+        if (title.equals("Patient Directory")) {
+
+            card.setCursor(
+                    Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+            );
+
+            card.addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    showPage("Patients");
+                }
+            });
+        }
 
         return card;
     }
