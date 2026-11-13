@@ -1,0 +1,15 @@
+# macOS files
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Compiled Java output
+out/
+
+# Local environment files
+.env
