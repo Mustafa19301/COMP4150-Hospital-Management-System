@@ -1,6 +1,7 @@
 package gui;
 
 import gui.panels.PatientPanel;
+import gui.panels.MedicalRecordPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +22,7 @@ public class DashboardFrame extends JFrame {
 
     private final String name;
     private final String role;
+    private final int staffId;
 
     private CardLayout contentLayout;
     private JPanel contentPanel;
@@ -32,6 +34,7 @@ public class DashboardFrame extends JFrame {
 
         name = (String) staff.get("name");
         role = (String) staff.get("role");
+        staffId = ((Number) staff.get("staff_id")).intValue();
 
         setTitle("CarePoint | Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -247,6 +250,14 @@ public class DashboardFrame extends JFrame {
                 new PatientPanel(),
                 "Patients"
         );
+
+        if (role.equals("Doctor")) {
+
+            contentPanel.add(
+                    new MedicalRecordPanel(staffId, name),
+                    "Medical Records"
+            );
+        }
 
         return contentPanel;
     }
@@ -489,7 +500,8 @@ public class DashboardFrame extends JFrame {
         card.add(Box.createVerticalStrut(8));
         card.add(descriptionLabel);
 
-        if (title.equals("Patient Directory")) {
+        if (title.equals("Patient Directory")
+                || title.equals("Medical Records")) {
 
             card.setCursor(
                     Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
@@ -499,7 +511,12 @@ public class DashboardFrame extends JFrame {
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    showPage("Patients");
+
+                    if (title.equals("Patient Directory")) {
+                        showPage("Patients");
+                    } else if (title.equals("Medical Records")) {
+                        showPage("Medical Records");
+                    }
                 }
             });
         }

@@ -1,4 +1,3 @@
-
 package dao;
 
 import database.DatabaseConnection;
@@ -102,20 +101,26 @@ public class MedicalRecordDAO {
         }
     }
 
-    public boolean deleteMedicalRecord(int recordId)
+
+    public boolean deleteMedicalRecord(int recordId, int doctorId)
             throws SQLException {
 
-        String sql = "CALL DeleteMedicalRecord(?)";
+        String sql = "{CALL DeleteMedicalRecord(?, ?)}";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             CallableStatement stmt = conn.prepareCall(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement statement = connection.prepareCall(sql)) {
 
-            stmt.setInt(1, recordId);
+            statement.setInt(1, recordId);
+            statement.setInt(2, doctorId);
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next() && rs.getInt("rows_deleted") > 0;
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    return result.getInt("rows_deleted") > 0;
+                }
             }
         }
+
+        return false;
     }
 
     private List<Map<String, Object>> readRows(ResultSet rs)
