@@ -1,4 +1,3 @@
-
 package main;
 
 import dao.PatientDAO;
@@ -18,6 +17,8 @@ public class DAOTest {
 
         int temporaryPatientId = -1;
         int temporaryRecordId = -1;
+
+        int doctorId = 1;
 
         try {
 
@@ -73,7 +74,7 @@ public class DAOTest {
                     "Created patient ID: " + temporaryPatientId
             );
 
-            System.out.println("\n UPDATE PATIENT");
+            System.out.println("\nUPDATE PATIENT");
 
             boolean patientUpdated = patientDAO.updatePatient(
                     temporaryPatientId,
@@ -85,11 +86,12 @@ public class DAOTest {
 
             System.out.println("Patient updated: " + patientUpdated);
 
-            System.out.println("\n ADD MEDICAL RECORD");
+
+            System.out.println("\nADD MEDICAL RECORD");
 
             temporaryRecordId = recordDAO.addMedicalRecord(
                     temporaryPatientId,
-                    1,
+                    doctorId,
                     LocalDate.now(),
                     "Java DAO test diagnosis",
                     "Java DAO test treatment",
@@ -100,7 +102,8 @@ public class DAOTest {
                     "Created medical record ID: " + temporaryRecordId
             );
 
-            System.out.println("\n PATIENT MEDICAL HISTORY");
+
+            System.out.println("\nPATIENT MEDICAL HISTORY");
 
             List<Map<String, Object>> history =
                     recordDAO.getPatientMedicalHistory(
@@ -112,10 +115,10 @@ public class DAOTest {
             }
 
 
-            System.out.println("\n RECORDS BY DOCTOR 1");
+            System.out.println("\nRECORDS BY DOCTOR " + doctorId);
 
             List<Map<String, Object>> doctorRecords =
-                    recordDAO.getMedicalRecordsByDoctor(1);
+                    recordDAO.getMedicalRecordsByDoctor(doctorId);
 
             System.out.println(
                     "Records found: " + doctorRecords.size()
@@ -127,7 +130,7 @@ public class DAOTest {
             boolean recordUpdated = recordDAO.updateMedicalRecord(
                     temporaryRecordId,
                     temporaryPatientId,
-                    1,
+                    doctorId,
                     LocalDate.now(),
                     "Updated Java DAO diagnosis",
                     "Updated Java DAO treatment",
@@ -148,17 +151,19 @@ public class DAOTest {
 
             if (temporaryRecordId != -1) {
                 try {
+
                     boolean deleted =
                             recordDAO.deleteMedicalRecord(
-                                    temporaryRecordId
+                                    temporaryRecordId,
+                                    doctorId
                             );
 
                     System.out.println(
-                            "Temporary medical record deleted: "
-                                    + deleted
+                            "Temporary medical record deleted: " + deleted
                     );
 
                 } catch (SQLException e) {
+
                     System.out.println(
                             "Could not delete temporary medical record: "
                                     + e.getMessage()
@@ -168,6 +173,7 @@ public class DAOTest {
 
             if (temporaryPatientId != -1) {
                 try {
+
                     boolean deleted =
                             patientDAO.deletePatient(
                                     temporaryPatientId
@@ -178,6 +184,7 @@ public class DAOTest {
                     );
 
                 } catch (SQLException e) {
+
                     System.out.println(
                             "Could not delete temporary patient: "
                                     + e.getMessage()

@@ -47,6 +47,7 @@ BEGIN
         mr.record_id,
         p.patient_id,
         p.name AS patient_name,
+        mr.doctor_id,
         mr.record_date,
         s.name AS doctor_name,
         d.specialization,
